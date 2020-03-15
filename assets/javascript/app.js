@@ -14,12 +14,15 @@ next question. Once all questions have been answered or missed, the game
 displays the number of questions answered correctly and incorrectly. The user
 is given the option to play again.
 ******************************************************************************/
-const wonderWomenQnA = "";
+const wonderWomenTriviaInstr = "Click the Start button to begin";
+const dataset = "wonderWomen";
+const numQns = 10;
+const timeout = 30;
 
 class TriviaGame {
   // PROPERTIES
   name = "Trivia";
-  instructions = "Click the Start button to begin.";
+  instructions = "";
   #dataset = [];
   #defaultImages = {
     "correctGIF": null,
@@ -52,6 +55,11 @@ class TriviaGame {
 
   getGameInstr() {
     return this.instructions;
+  }
+
+  getTriviaQnA() {
+    // Return random trivia Q&A set
+    return this.#dataset[Math.floor(Math.random() * this.#dataset.length)];
   }
 
   getCorrectAnsGIF() {
@@ -122,8 +130,30 @@ class TriviaGame {
 
 // Execute script once page is fully loaded
 $(document).ready(function() {
-  let wonderWomanTrivia = new TriviaGame("Real Wonder Women Trivia",
+  let wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
     wonderWomenTriviaInstr,
-    wonderWomenQnA,
-    ["../assets/images/...", "../assets/images/...", "../assets/images/..."]);
+    dataset,
+    ["https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif", 
+     "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif", 
+     "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif"]);
+
+  var stopwatch = timeout;
+
+  function displaySecsLeft() {
+    stopwatch--;
+    $("#stopwatch").text(stopwatch);
+  }
+
+  // Once player clicks the Start/Play Again buttons, launch a new game.
+  $("button").on("click", function(event) {
+    $("#game-launchpad").empty();
+    $("#stopwatch").text(stopwatch);
+
+    var interval = setInterval(displaySecsLeft, 1000);
+    
+    setTimeout(function() {
+      console.log("Time's up!");
+      clearInterval(interval);
+    }, 30000);
+  });
 });

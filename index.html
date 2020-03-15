@@ -10,7 +10,7 @@
     <meta name="description" content="Full Stack Flex Bootcamp Homework 5">
 
     <!-- Favicon -->
-    <!-- <link rel="stylesheet" href="assets/images/..."> -->
+    <link rel="shortcut icon" href="assets/images/female.png">
 
     <!-- Fonts -->
     <!-- Font Awesome -->
@@ -22,13 +22,44 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Site-specific Styles -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Wonder Women Trivia</title>
+    <title>Real Wonder Women Trivia</title>
   </head>
 
   <!--================================= BODY =================================-->
   <body>
-    <h1>Real Wonder Women Trivia</h1>
-    <button class="btn btn-outline-secondary">Start</button>
+    <!-- Header -->
+    <header>
+      <h1>Real Wonder Women Trivia</h1>
+    </header>
+
+    <!-- Primary Content -->
+    <main class="container">
+      <div id="stopwatch"></div>
+      <div id="question"></div>
+      <div class="btn-group-vertical" id="options">
+        <!--
+        <button type="button" class="btn btn-secondary" id="opt-01"></button>
+        <button type="button" class="btn btn-secondary" id="opt-02"></button>
+        <button type="button" class="btn btn-secondary" id="opt-03"></button>
+        <button type="button" class="btn btn-secondary" id="opt-04"></button>
+        -->
+      </div>
+      <div id="game-launchpad">
+        <button class="btn btn-outline-secondary" id="start-btn">Start</button>
+      </div>  
+    </main>
+
+    <!-- Sticky Footer with Attributions -->
+    <footer class="fixed-bottom">
+      <div class="container justify-content-center">
+        <div class="row">
+          <div class="col-12 text-center" id="site-info">
+            <div id="copyright">&copy; 2020 Christopher B. Zenner. All rights reserved.</div>
+            <div id="attribution">Fonts courtesy of <a href="https://fonts.google.com/" target="_blank">Google Fonts</a>. <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">FLATICON</a>. Background courtesy of <a href="https://www.toptal.com/designers/subtlepatterns/" target="_blank">Toptal</a>. --></div>
+          </div>
+        </div>
+      </div>
+    </footer>    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -37,6 +68,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- Trivia Game Dataset -->
+    <script src="assets/javascript/wonder-women.js"></script>
+    <!-- Trivia Game Engine -->
+    <script src="assets/javascript/app.js"></script>
   </body>
 
 </html>
