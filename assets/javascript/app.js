@@ -126,6 +126,22 @@ class TriviaGame {
   }
 
   /* *************************************************************
+     swapCorrectAns()
+     - Randomize position of correct answer. Return index of 
+       correct answer.
+     ************************************************************* */
+  swapCorrectAns(ans) {
+    var correctAns = ans[0],
+        index = Math.floor(Math.random() * ans.length),
+        swappedAns = ans[index];
+
+    ans[index] = correctAns;
+    ans[0] = swappedAns;
+    
+    return index;
+  }  
+
+  /* *************************************************************
      resetGameState()
      - Reset relevant game properties such that a new game is
        initialized.
@@ -153,7 +169,11 @@ $(document).ready(function() {
   // ********************************************
   function displayQnASet(qna) {
     // DEBUG
-    console.log(qna);
+    // console.log(qna);
+
+    // console.log("before: " + qna.answers);
+    var correctAnsID = wonderWomenTrivia.swapCorrectAns(qna.answers);
+    // console.log("after: " + qna.answers);
 
     $("#question").text(qna.question);
 
@@ -163,6 +183,8 @@ $(document).ready(function() {
       $("#options").append('<button type="button" class="list-group-item list-group-item-action" id="' + optID + '">');
       $('#' + optID).text(ans);
     });
+
+    return correctAnsID;
   }
 
   // ********************************************
@@ -175,20 +197,27 @@ $(document).ready(function() {
 
   // Once player clicks the Start Game button, launch a new game.
   $("button").on("click", function(event) {
+    // Get rid of the start button.
     $("#game-launchpad").empty();
+    // Initiate UI stopwatch.
     $("#stopwatch").text(stopwatch);
 
     // Grab interal ID so it can be reset.
     var intervalID = setInterval(displaySecsLeft, 1000);
     // Select Q&A set.
     var qAndAnsSet = wonderWomenTrivia.getTriviaQnA();
-
-    displayQnASet(qAndAnsSet);
-        
+    // Display Q&A set and remember correct answer.
+    var correctAns = displayQnASet(qAndAnsSet);
     // Allow user x seconds to answer question such that x = timeout.
-    setTimeout(function() {
+    var timeoutID = setTimeout(function() {
       $("#stopwatch").text("Time's up!");
       clearInterval(intervalID);
     }, (timeout * 1000));
+
+    console.log("correct ans: " + correctAns);
+
+    $("#options").on("click", function(event) {
+      console.log("event targed ID: " + event.target.id);
+    });
   });
 });
