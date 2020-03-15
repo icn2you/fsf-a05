@@ -1,3 +1,11 @@
+/******************************************************************************
+FSWD:  Christopher B. Zenner
+Date:  03/16/2020
+File:  wonder-women.js
+Ver.:  0.1.0 20200311
+
+This script specifies the structure for a JSON dataset encapsulating question- and-answer sets for a trivia game. It is for reference purposes only.
+******************************************************************************/
 var wonderWomen = [
   {
     "woman": "Lorem Ipsum",

@@ -1,3 +1,11 @@
+/******************************************************************************
+FSWD:  Christopher B. Zenner
+Date:  03/16/2020
+File:  wonder-women.js
+Ver.:  0.1.0 20200314
+
+This JSON dataset encapsulates the question-and-answer sets for a trivia game.
+******************************************************************************/
 var wonderWomen = [
   {
     "woman": "Sappho",
