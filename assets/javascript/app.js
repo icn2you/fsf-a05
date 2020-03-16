@@ -173,7 +173,8 @@ $(document).ready(function() {
     });
 
   // Initialize stopwatch
-  var stopwatch = timeout;
+  var stopwatch = timeout,
+      intervalID, qAndASet, correctAns, timeoutID;
 
   // ********************************************
   // displayQnASet() - Trivia question w/answers
@@ -201,11 +202,21 @@ $(document).ready(function() {
   // ********************************************
   // displayResult() - Player feedback
   // ********************************************
-  function displayResult(comment, img) {   
+  function displayResult(comment, img, correctAns = null) {   
+    // Clear Q&A set from UI.
     $("#question").empty();
     $("#options").empty();
 
+    // Let the user know if their answer was right/wrong.
     $("#result-comment").text(comment);
+
+    // If answer was wrong, display right answer.
+    if (correctAns) {
+      $("#result-comment").append('<div id="correct-ans">');
+      $("#correct-ans").text("The correct answer is: " + correctAns);
+    }
+
+    // Display result GIF.
     $("#result-img").append('<img>');
     $("#result-img > img").attr({
       src: img.src,
@@ -235,21 +246,6 @@ $(document).ready(function() {
     // Initiate UI stopwatch.
     $("#stopwatch").text(stopwatch);
 
-    // Grab interval ID so it can be reset.
-    var intervalID = setInterval(displaySecsLeft, 1000);
-    // Select Q&A set.
-    var qAndAnsSet = wonderWomenTrivia.getTriviaQnA();
-    // Display Q&A set and remember correct answer.
-    var correctAns = displayQnASet(qAndAnsSet);
-    // Allow user x seconds to answer question such that x = timeout.
-    var timeoutID = setTimeout(function() {
-      $("#stopwatch").text("Time's up!");
-      clearInterval(intervalID);
-    }, (timeout * 1000));
-
-    // DEBUG:
-    console.log("correct ans: " + qAndAnsSet.answers[correctAns]);
-
     $("#options").on("click", function(event) {
       var targetID = "#" + event.target.id,
           targetIDContents = $(targetID).text();
@@ -266,7 +262,7 @@ $(document).ready(function() {
       clearInterval(intervalID);
       clearTimeout(timeoutID);
   
-      if (targetIDContents === qAndAnsSet.answers[correctAns]) {
+      if (targetIDContents === qAndASet.answers[correctAns]) {
         // ASSERT: Player answered correctly.
         
         // DEBUG:
@@ -282,8 +278,31 @@ $(document).ready(function() {
         // console.log("WRONG!");
         wonderWomenTrivia.incrementIncorrectAns();
 
-        displayResult("INCORRECT!", wonderWomenTrivia.getIncorrectAnsGIF());
+        displayResult("INCORRECT!", 
+                      wonderWomenTrivia.getIncorrectAnsGIF(),
+                      qAndASet.answers[correctAns]);
       }
     });
+
+    // Grab interval ID so it can be reset.
+    intervalID = setInterval(displaySecsLeft, 1000);
+    // Select Q&A set.
+    qAndASet = wonderWomenTrivia.getTriviaQnA();
+    // Display Q&A set and remember correct answer.
+    correctAns = displayQnASet(qAndASet);
+    // Allow user x seconds to answer question such that x = timeout.
+    timeoutID = setTimeout(function() {
+      // DEBUG:
+      console.log("Time's up!");
+
+      displayResult("TIME'S UP!", 
+      wonderWomenTrivia.getUnansGIF(),
+      qAndASet.answers[correctAns]);
+
+      clearInterval(intervalID);
+    }, (timeout * 1000));
+
+    // DEBUG:
+    console.log("correct ans: " + qAndASet.answers[correctAns]);
   });
 });
