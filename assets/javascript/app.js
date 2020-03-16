@@ -61,7 +61,7 @@ class TriviaGame {
     // Return random trivia Q&A set
     var index = Math.floor(Math.random() * this.#dataset.length);
 
-    // DEBUG
+    // DEBUG:
     // console.log(this.#dataset);
     // console.log("size = " + this.#dataset.length);
     // console.log ("index = " + index);
@@ -157,9 +157,20 @@ $(document).ready(function() {
   let wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
     wonderWomenTriviaInstr,
     dataset,
-    ["https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif", 
-     "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif", 
-     "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif"]);
+    {
+      "correctGIF": { 
+        "src": "https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif",
+        "alt": "Rose Nylund Strutting Her Stuff" 
+      }, 
+      "incorrectGIF": {
+        "src": "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif",
+        "alt": "..."
+      }, 
+      "unansweredGIF": {
+        "src": "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif",
+        "alt": "..."
+      }
+    });
 
   // Initialize stopwatch
   var stopwatch = timeout;
@@ -168,7 +179,7 @@ $(document).ready(function() {
   // displayQnASet() - Trivia question w/answers
   // ********************************************
   function displayQnASet(qna) {
-    // DEBUG
+    // DEBUG:
     // console.log(qna);
 
     // console.log("before: " + qna.answers);
@@ -188,6 +199,21 @@ $(document).ready(function() {
   }
 
   // ********************************************
+  // displayResult() - Player feedback
+  // ********************************************
+  function displayResult(comment, img) {   
+    $("#question").empty();
+    $("#options").empty();
+
+    $("#result-comment").text(comment);
+    $("#result-img").append('<img>');
+    $("#result-img > img").attr({
+      src: img.src,
+      alt: img.alt
+    });
+  }  
+
+  // ********************************************
   // displaySecsLeft() - UI stopwatch
   // ********************************************
   function displaySecsLeft() {
@@ -195,14 +221,21 @@ $(document).ready(function() {
     $("#stopwatch").text(stopwatch);
   }
 
+  // ********************************************
+  // resetStopwatch() - UI stopwatch reset
+  // ********************************************
+  // function resetStopwatch(stopwatchID) {
+  //   clearInterval(stopwatchID);
+  // }
+
   // Once player clicks the Start Game button, launch a new game.
-  $("button").on("click", function(event) {
+  $("#start-btn").on("click", function() {
     // Get rid of the start button.
     $("#game-launchpad").empty();
     // Initiate UI stopwatch.
     $("#stopwatch").text(stopwatch);
 
-    // Grab interal ID so it can be reset.
+    // Grab interval ID so it can be reset.
     var intervalID = setInterval(displaySecsLeft, 1000);
     // Select Q&A set.
     var qAndAnsSet = wonderWomenTrivia.getTriviaQnA();
@@ -214,10 +247,35 @@ $(document).ready(function() {
       clearInterval(intervalID);
     }, (timeout * 1000));
 
-    console.log("correct ans: " + correctAns);
+    // DEBUG:
+    // console.log("correct ans: " + qAndAnsSet.answers[correctAns]);
 
     $("#options").on("click", function(event) {
-      console.log("event targed ID: " + event.target.id);
+      var targetID = "#" + event.target.id,
+          targetIDContents = $(targetID).text();
+
+      var timeToNextQuesID = setTimeout(function() {
+
+      }, ((timeout / 3) * 1000));
+
+      // DEBUG:
+      // console.log("event target ID: " + targetID);
+      // console.log("event target contents: " + targetIDContents);
+      // console.log("correct ans: " + qAndAnsSet.answers[correctAns]);
+
+      clearInterval(intervalID);
+      clearTimeout(timeoutID);
+  
+      if (targetIDContents === qAndAnsSet.answers[correctAns]) {
+        // DEBUG:
+        // console.log("CORRECT!");
+        wonderWomenTrivia.incrementCorrectAns();
+        
+        displayResult("CORRECT!", wonderWomenTrivia.getCorrectAnsGIF());
+      } 
+      else {
+        console.log("WRONG!");
+      }
     });
   });
 });
