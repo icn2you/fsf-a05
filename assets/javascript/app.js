@@ -24,6 +24,7 @@ class TriviaGame {
   name = "Trivia";
   instructions = "";
   #dataset = [];
+  #questions = [];
   #resultImages = {
     "correctGIF": null,
     "incorrectGIF": null,
@@ -107,12 +108,22 @@ class TriviaGame {
   }    
 
   /* *************************************************************
-     getRandomQnA()
+     getUniqueRandomQnA()
      - Retrieve a random question with answers from the dataset.
      ************************************************************* */      
-  getRandomQnA() {
+  getUniqueRandomQnA() {
     // Return random trivia Q&A set
-    var index = Math.floor(Math.random() * this.#dataset.length);
+    var index;
+    
+    do {
+      index = Math.floor(Math.random() * this.#dataset.length);
+    }
+    while(this.#questions.indexOf(index) > -1)
+
+    this.#questions.push(index);
+
+    // DEBUG:
+    console.log("questions: " + this.#questions);
 
     return this.#dataset[index];
   }
@@ -260,7 +271,7 @@ $(document).ready(function() {
 
       if (wonderWomenTrivia.getNumQnsAsked() < numQns) {
         // ASSERT: Game is not over. 
-        correctAns = displayQnASet(wonderWomenTrivia.getRandomQnA());
+        correctAns = displayQnASet(wonderWomenTrivia.getUniqueRandomQnA());
       }
       else {
         // ASSERT: Game is over.
@@ -324,6 +335,6 @@ $(document).ready(function() {
     });
 
     // Display initial Q&A set and remember correct answer.
-    correctAns = displayQnASet(wonderWomenTrivia.getRandomQnA());
+    correctAns = displayQnASet(wonderWomenTrivia.getUniqueRandomQnA());
   });
 });
