@@ -29,6 +29,7 @@ class TriviaGame {
     "incorrectGIF": null,
     "unansweredGIF": null
   };
+  #asked = 0;
   #correct = 0;
   #incorrect = 0;
   #unanswered = 0;
@@ -57,18 +58,6 @@ class TriviaGame {
     return this.instructions;
   }
 
-  getTriviaQnA() {
-    // Return random trivia Q&A set
-    var index = Math.floor(Math.random() * this.#dataset.length);
-
-    // DEBUG:
-    // console.log(this.#dataset);
-    // console.log("size = " + this.#dataset.length);
-    // console.log ("index = " + index);
-
-    return this.#dataset[index];
-  }
-
   getCorrectAnsGIF() {
     return this.#resultImages.correctGIF;
   }
@@ -79,6 +68,10 @@ class TriviaGame {
 
   getUnansGIF () {
     return this.#resultImages.unansweredGIF;
+  }
+
+  getNumQnsAsked() {
+    return this.#asked;
   }
 
   getNumCorrectAns() {
@@ -94,35 +87,34 @@ class TriviaGame {
   }
 
   /* *************************************************************
-     getRandomQnA()
-     - Retrieve a random question with answers from the dataset.
+     Incrementer Methods
+     - Increment various counts.
      ************************************************************* */      
-  getRandomQnA() {
-    // return ...;
+  incrementQnsAsked() {
+    this.#asked++;
   }
-
-  /* *************************************************************
-     incrementLosses()
-     - Add a loss to player's tallies.
-     ************************************************************* */      
+  
   incrementCorrectAns() {
     this.#correct++;
   }
   
-  /* *************************************************************
-     incrementWins()
-     - Add a win to player's tallies.
-     ************************************************************* */    
   incrementIncorrectAns() {
     this.#incorrect++;
   }
 
-  /* *************************************************************
-     incrementWins()
-     - Add a win to player's tallies.
-     ************************************************************* */    
   incrementUnans() {
-      this.#unanswered++;
+    this.#unanswered++;
+  }    
+
+  /* *************************************************************
+     getRandomQnA()
+     - Retrieve a random question with answers from the dataset.
+     ************************************************************* */      
+  getRandomQnA() {
+    // Return random trivia Q&A set
+    var index = Math.floor(Math.random() * this.#dataset.length);
+
+    return this.#dataset[index];
   }
 
   /* *************************************************************
@@ -172,20 +164,33 @@ $(document).ready(function() {
       }
     });
 
-  // Initialize stopwatch
-  var stopwatch = timeout,
-      intervalID, qAndASet, correctAns, timeoutID;
+  // Define question-specific variables.
+  var correctAns, stopwatch, intervalID, timeoutID;
+
+  // ********************************************
+  // displaySecsLeft() - UI stopwatch
+  // ********************************************
+  function displaySecsLeft() {
+    stopwatch--;
+    $("#stopwatch").text("You have " + stopwatch + " seconds remaining.");
+  }
+
+  // ********************************************
+  // resetStopwatch() - UI stopwatch reset
+  // ********************************************
+  function resetStopwatch() {
+    stopwatch = timeout;
+    $("#stopwatch").text("You have " + stopwatch + " seconds remaining.");
+  }  
 
   // ********************************************
   // displayQnASet() - Trivia question w/answers
   // ********************************************
   function displayQnASet(qna) {
-    // DEBUG:
-    // console.log(qna);
-
-    // console.log("before: " + qna.answers);
     var correctAnsID = wonderWomenTrivia.swapCorrectAns(qna.answers);
-    // console.log("after: " + qna.answers);
+
+    // Initiate UI stopwatch.
+    resetStopwatch();     
 
     $("#question").text(qna.question);
 
@@ -196,13 +201,34 @@ $(document).ready(function() {
       $('#' + optID).text(ans);
     });
 
-    return correctAnsID;
+    // Grab interval ID so it can be reset and launch stopwatch.
+    intervalID = setInterval(displaySecsLeft, 1000);
+
+    timeoutID = setTimeout(function() {
+      // ASSERT: User did not answer question in allotted time.
+      wonderWomenTrivia.incrementUnans();
+
+      displayResult("TIME'S UP!", 
+      wonderWomenTrivia.getUnansGIF(),
+      correctAns);
+
+      clearInterval(intervalID);
+
+      getNextQn();
+    }, (timeout * 1000));   
+
+    wonderWomenTrivia.incrementQnsAsked();
+
+    // DEBUG: 
+    console.log("Questions asked: " + wonderWomenTrivia.getNumQnsAsked());
+
+    return qna.answers[correctAnsID];
   }
 
   // ********************************************
   // displayResult() - Player feedback
   // ********************************************
-  function displayResult(comment, img, correctAns = null) {   
+  function displayResult(comment, img, ans = null) {   
     // Clear Q&A set from UI.
     $("#question").empty();
     $("#options").empty();
@@ -211,9 +237,9 @@ $(document).ready(function() {
     $("#result-comment").text(comment);
 
     // If answer was wrong, display right answer.
-    if (correctAns) {
+    if (ans) {
       $("#result-comment").append('<div id="correct-ans">');
-      $("#correct-ans").text("The correct answer is: " + correctAns);
+      $("#correct-ans").text("The correct answer is: " + ans);
     }
 
     // Display result GIF.
@@ -222,37 +248,39 @@ $(document).ready(function() {
       src: img.src,
       alt: img.alt
     });
+  } 
+  
+  // ********************************************
+  // getNextQn() - UI refresh after period.
+  // ********************************************
+  function getNextQn() {
+    setTimeout(function() {
+      // Clear the UI to prepare for next question.
+      $("#stopwatch").empty();
+      $("#result-comment").empty();
+      $("#correct-ans").remove();
+      $("#result-img").empty();
+
+      if (wonderWomenTrivia.getNumQnsAsked() < numQns) {
+        // ASSERT: Game is not over. 
+        correctAns = displayQnASet(wonderWomenTrivia.getRandomQnA());
+      }
+      else {
+        // ASSERT: Game is over.
+        console.log("Game over!");
+      }
+    }, ((timeout / 3) * 1000));
   }  
-
-  // ********************************************
-  // displaySecsLeft() - UI stopwatch
-  // ********************************************
-  function displaySecsLeft() {
-    stopwatch--;
-    $("#stopwatch").text(stopwatch);
-  }
-
-  // ********************************************
-  // resetStopwatch() - UI stopwatch reset
-  // ********************************************
-  // function resetStopwatch(stopwatchID) {
-  //   clearInterval(stopwatchID);
-  // }
 
   // Once player clicks the Start Game button, launch a new game.
   $("#start-btn").on("click", function() {
     // Get rid of the start button.
     $("#game-launchpad").empty();
-    // Initiate UI stopwatch.
-    $("#stopwatch").text(stopwatch);
-
+  
+    // Listen for player's answer.
     $("#options").on("click", function(event) {
       var targetID = "#" + event.target.id,
           targetIDContents = $(targetID).text();
-
-      var timeToNextQuesID = setTimeout(function() {
-
-      }, ((timeout / 3) * 1000));
 
       // DEBUG:
       // console.log("event target ID: " + targetID);
@@ -262,14 +290,14 @@ $(document).ready(function() {
       clearInterval(intervalID);
       clearTimeout(timeoutID);
   
-      if (targetIDContents === qAndASet.answers[correctAns]) {
+      if (targetIDContents === correctAns) {
         // ASSERT: Player answered correctly.
         
         // DEBUG:
         // console.log("CORRECT!");
         wonderWomenTrivia.incrementCorrectAns();
 
-        displayResult("CORRECT!", wonderWomenTrivia.getCorrectAnsGIF());
+        displayResult("YOU GO, GIRL!", wonderWomenTrivia.getCorrectAnsGIF());
       } 
       else {
         // ASSERT: Player answered incorrectly.
@@ -278,31 +306,15 @@ $(document).ready(function() {
         // console.log("WRONG!");
         wonderWomenTrivia.incrementIncorrectAns();
 
-        displayResult("INCORRECT!", 
+        displayResult("I DON'T THINK SO!", 
                       wonderWomenTrivia.getIncorrectAnsGIF(),
-                      qAndASet.answers[correctAns]);
+                      correctAns);
       }
+
+      getNextQn();
     });
 
-    // Grab interval ID so it can be reset.
-    intervalID = setInterval(displaySecsLeft, 1000);
-    // Select Q&A set.
-    qAndASet = wonderWomenTrivia.getTriviaQnA();
-    // Display Q&A set and remember correct answer.
-    correctAns = displayQnASet(qAndASet);
-    // Allow user x seconds to answer question such that x = timeout.
-    timeoutID = setTimeout(function() {
-      // DEBUG:
-      console.log("Time's up!");
-
-      displayResult("TIME'S UP!", 
-      wonderWomenTrivia.getUnansGIF(),
-      qAndASet.answers[correctAns]);
-
-      clearInterval(intervalID);
-    }, (timeout * 1000));
-
-    // DEBUG:
-    console.log("correct ans: " + qAndASet.answers[correctAns]);
+    // Display initial Q&A set and remember correct answer.
+    correctAns = displayQnASet(wonderWomenTrivia.getRandomQnA());
   });
 });
