@@ -24,7 +24,7 @@ class TriviaGame {
   name = "Trivia";
   instructions = "";
   #dataset = [];
-  #defaultImages = {
+  #resultImages = {
     "correctGIF": null,
     "incorrectGIF": null,
     "unansweredGIF": null
@@ -42,7 +42,7 @@ class TriviaGame {
     this.name = name;
     this.instructions = instr;
     this.#dataset = qna;
-    this.#defaultImages = images;
+    this.#resultImages = images;
   }
     
   /* *************************************************************
@@ -70,15 +70,15 @@ class TriviaGame {
   }
 
   getCorrectAnsGIF() {
-    return this.#defaultImages.correctGIF;
+    return this.#resultImages.correctGIF;
   }
 
   getIncorrectAnsGIF () {
-    return this.#defaultImages.incorrectGIF;
+    return this.#resultImages.incorrectGIF;
   }
 
   getUnansGIF () {
-    return this.#defaultImages.unansweredGIF;
+    return this.#resultImages.unansweredGIF;
   }
 
   getNumCorrectAns() {
@@ -160,15 +160,15 @@ $(document).ready(function() {
     {
       "correctGIF": { 
         "src": "https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif",
-        "alt": "Rose Nylund Strutting Her Stuff" 
+        "alt": "Rose Nylund's Strut" 
       }, 
       "incorrectGIF": {
         "src": "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif",
-        "alt": "..."
+        "alt": "Rihanna's Check"
       }, 
       "unansweredGIF": {
         "src": "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif",
-        "alt": "..."
+        "alt": "Judge Judy's Watch"
       }
     });
 
@@ -248,7 +248,7 @@ $(document).ready(function() {
     }, (timeout * 1000));
 
     // DEBUG:
-    // console.log("correct ans: " + qAndAnsSet.answers[correctAns]);
+    console.log("correct ans: " + qAndAnsSet.answers[correctAns]);
 
     $("#options").on("click", function(event) {
       var targetID = "#" + event.target.id,
@@ -267,14 +267,22 @@ $(document).ready(function() {
       clearTimeout(timeoutID);
   
       if (targetIDContents === qAndAnsSet.answers[correctAns]) {
+        // ASSERT: Player answered correctly.
+        
         // DEBUG:
         // console.log("CORRECT!");
         wonderWomenTrivia.incrementCorrectAns();
-        
+
         displayResult("CORRECT!", wonderWomenTrivia.getCorrectAnsGIF());
       } 
       else {
-        console.log("WRONG!");
+        // ASSERT: Player answered incorrectly.
+        
+        // DEBUG:
+        // console.log("WRONG!");
+        wonderWomenTrivia.incrementIncorrectAns();
+
+        displayResult("INCORRECT!", wonderWomenTrivia.getIncorrectAnsGIF());
       }
     });
   });
