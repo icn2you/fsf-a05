@@ -16,20 +16,20 @@ is given the option to play again.
 ******************************************************************************/
 const wonderWomenTriviaInstr = "Click the Start button to begin";
 const dataset = wonderWomen;
-const numQns = 10;
-const timeout = 30; // secs.
+const numQns = 3;
+const timeout = 15; // secs.
 
 class TriviaGame {
   // PROPERTIES
   name = "Trivia";
   instructions = "";
   #dataset = [];
-  #questions = [];
   #resultImages = {
     "correctGIF": null,
     "incorrectGIF": null,
     "unansweredGIF": null
   };
+  #questions = [];
   #asked = 0;
   #correct = 0;
   #incorrect = 0;
@@ -123,7 +123,7 @@ class TriviaGame {
     this.#questions.push(index);
 
     // DEBUG:
-    console.log("questions: " + this.#questions);
+    // console.log("questions: " + this.#questions);
 
     return this.#dataset[index];
   }
@@ -149,14 +149,24 @@ class TriviaGame {
      - Reset relevant game properties such that a new game is
        initialized.
      ************************************************************* */
-  resetGameState() {
-      // ...  
+  resetGameState(qna) {
+    this.#dataset = qna;
+    
+    while (this.#questions.length > 0) {
+      this.#questions.pop();
+    }
+    
+    this.#asked = 0;
+    this.#correct = 0;
+    this.#incorrect = 0;
+    this.#unanswered = 0;  
   }  
 }
 
 // Execute script once page is fully loaded
 $(document).ready(function() {
   // Create game object.
+  /*
   let wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
     wonderWomenTriviaInstr,
     dataset,
@@ -173,10 +183,10 @@ $(document).ready(function() {
         "src": "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif",
         "alt": "Judge Judy's Watch"
       }
-    });
+    });*/
 
-  // Define question-specific variables.
-  var correctAns, stopwatch, intervalID, timeoutID;
+  // Also define question-specific variables.
+  var wonderWomenTrivia, correctAns, stopwatch, intervalID, timeoutID;
 
   // ********************************************
   // displaySecsLeft() - UI stopwatch display
@@ -299,13 +309,36 @@ $(document).ready(function() {
     $("#player-stats").append('<li id="not-ans">');
     $("#not-ans").text(unanswered);
     
-    $("#game-launchpad").append('<button class="btn btn-outline-secondary" id="start-btn">');
-    $("#start-btn").text("New Game");
+    $("#game-launchpad").append('<button class="btn btn-outline-secondary">');
+    $("#game-launchpad > button").text("New Game");
+
+    // wonderWomenTrivia.resetGameState(dataset);
   }
 
   // Once player clicks the Start Game button, launch a new game.
-  $("#start-btn").on("click", function() {
+  $("#game-launchpad").on("click", function() {
+    // Create game object.
+    // console.log("before: " + wonderWomenTrivia);
+    wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
+      wonderWomenTriviaInstr,
+      dataset,
+      {
+        "correctGIF": { 
+          "src": "https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif",
+          "alt": "Rose Nylund's Strut" 
+        }, 
+        "incorrectGIF": {
+          "src": "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif",
+          "alt": "Rihanna's Check"
+        }, 
+        "unansweredGIF": {
+          "src": "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif",
+          "alt": "Judge Judy's Watch"
+        }
+      });
+    // console.log("after: " + wonderWomenTrivia);  */
     // Get rid of the start button.
+    $("#survey-says").empty();
     $("#game-launchpad").empty();
   
     // Listen for player's answer.
