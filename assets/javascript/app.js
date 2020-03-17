@@ -319,6 +319,7 @@ $(document).ready(function() {
       });
 
     // Get rid of the start button.
+    $("#girl-power-img").remove();
     $("#survey-says").empty();
     $("#game-launchpad").empty();
 
