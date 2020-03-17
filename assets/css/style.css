@@ -1,0 +1,101 @@
+/******************************************************************************
+FSWD:  Christopher B. Zenner
+Date:  03/16/2020
+File:  style.css
+Ver.:  0.1.0 20200316
+
+This CSS specifies the layout and style for the Wonder Women Trivia Game.
+*******************************************************************************/
+
+/* Debug */
+.debug-border-red { border: 1px solid red !important; }
+.debug-border-org { border: 1px solid orange !important; }
+.debug-border-ylw { border: 1px solid yellow !important; }
+.debug-border-grn { border: 1px solid green !important; }
+.debug-border-blu { border: 1px solid blue !important; }
+.debug-border-pur { border: 1px solid purple !important; }
+
+
+/******************************************************************************
+ Color Elements
+*******************************************************************************/
+.color-primary-0 { color: #E83E8B }	/* Main Primary color */
+.color-primary-1 { color: #F692C0 }
+.color-primary-2 { color: #EF63A3 }
+.color-primary-3 { color: #E11A75 }
+.color-primary-4 { color: #CC005D }
+
+.color-complement-0 { color: #ABF341 }	/* Main Complement color */
+.color-complement-1 { color: #D1FA95 }
+.color-complement-2 { color: #BCF767 }
+.color-complement-3 { color: #99F01C }
+.color-complement-4 { color: #84DF00 }
+
+/******************************************************************************
+ Global Elements
+*******************************************************************************/
+* {
+  /* Make widths static */
+  box-sizing: border-box;
+}
+
+html, main.container {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(255, 200, 225);
+  background-image: url("../images/pink-rice.png");
+  color: #333;
+  font-family: 'Raleway', sans-serif;
+  height: 92%;
+}
+
+/******************************************************************************
+ Navigation Elements
+*******************************************************************************/
+a, a:active, a:hover, a:visited {
+  color: #EF63A3;
+  font-weight: 600;
+}
+
+/******************************************************************************
+ Main Elements (Primary Content)
+*******************************************************************************/
+main.container {
+  height: 100%;
+  max-width: 960px;
+}
+
+button {
+  border-color: #CC005D !important;
+  color: #333 !important;
+}
+
+button:active, button:hover {
+  background-color: #CC005D !important;
+  color: #FFF !important;
+}
+
+/******************************************************************************
+ Footer Elements
+*******************************************************************************/
+.fixed-bottom {
+  border-top: 5px #CC005D solid;
+  height: 8%;
+}
+
+footer {
+  background: #333;
+  color: #FFF;
+  font-weight: 500;
+}
+
+footer #copyright {
+  font-size: 0.75rem;
+  margin: 1vh 0;
+}
+
+footer #attribution {
+  font-size: 0.65625rem;
+}
