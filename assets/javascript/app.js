@@ -6,28 +6,29 @@ Ver.:  0.1.0 20200311
        
 This JS script implements a basic trivia game in which the user is presented
 with a question and four (4) options. The user is given 30 seconds to answer
-the question. If the question is answered within the allotted timeframe, the 
+the question. If the question is answered within the allotted time frame, the 
 game notifies the user if the answer is correct or incorrect, and then pro-
 ceeds to the next question. If the question is not answered within the allot-
 ted time frame, the game offers the correct answer, and the proceeds to the 
-next question. Once all questions have been answered or missed, the game
-displays the number of questions answered correctly and incorrectly. The user
-is given the option to play again.
+next question. Once all questions have been answered (or left unanswered), the 
+game displays the user's score (*i.e.*, the number of questions answered cor-
+rectly and incorrectly as well as the number of questions left unanswered). 
+The user is given the option to play again.
 ******************************************************************************/
-const wonderWomenTriviaInstr = "Click the Start button to begin";
 const dataset = wonderWomen;
-const numQns = 3;
-const timeout = 15; // secs.
+const numQns = 10;
+const timeout = 30; // secs.
+const wonderWomenTriviaInstr = "You will be given a series of " + numQs + " questions regarding famous women in history, accompanied by four (4) possible answers. (Yes, this is a multiple-choice test!) Click the option you think is correct. The game will tell you if your answer is right or wrong. Answer all of the questions correctly, and you may consider yourself a true feminist!";
 
 class TriviaGame {
   // PROPERTIES
   name = "Trivia";
-  instructions = "";
+  instructions = "Click the Start Game button to begin.";
   #dataset = [];
   #resultImages = {
-    "correctGIF": null,
-    "incorrectGIF": null,
-    "unansweredGIF": null
+    "correctGIF": { "src": null, "alt": null },
+    "incorrectGIF": { "src": null, "alt": null },
+    "unansweredGIF": { "src": null, "alt": null }
   };
   #questions = [];
   #asked = 0;
@@ -122,9 +123,6 @@ class TriviaGame {
 
     this.#questions.push(index);
 
-    // DEBUG:
-    // console.log("questions: " + this.#questions);
-
     return this.#dataset[index];
   }
 
@@ -148,6 +146,8 @@ class TriviaGame {
      resetGameState()
      - Reset relevant game properties such that a new game is
        initialized.
+       NOTE: This method is currently not used. It is being left
+             for reference and/or future use.
      ************************************************************* */
   resetGameState(qna) {
     this.#dataset = qna;
@@ -165,28 +165,12 @@ class TriviaGame {
 
 // Execute script once page is fully loaded
 $(document).ready(function() {
-  // Create game object.
-  /*
-  let wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
-    wonderWomenTriviaInstr,
-    dataset,
-    {
-      "correctGIF": { 
-        "src": "https://media.giphy.com/media/RIuHHNa7UgFKo/source.gif",
-        "alt": "Rose Nylund's Strut" 
-      }, 
-      "incorrectGIF": {
-        "src": "https://media.giphy.com/media/5TC1o3oRE68Mg/source.gif",
-        "alt": "Rihanna's Check"
-      }, 
-      "unansweredGIF": {
-        "src": "https://media.giphy.com/media/JzOyy8vKMCwvK/source.gif",
-        "alt": "Judge Judy's Watch"
-      }
-    });*/
-
-  // Also define question-specific variables.
-  var wonderWomenTrivia, correctAns, stopwatch, intervalID, timeoutID;
+  // Create game object and define game-specific variables.
+  var wonderWomenTrivia, 
+      correctAns, 
+      stopwatch, 
+      intervalID, 
+      timeoutID;
 
   // ********************************************
   // displaySecsLeft() - UI stopwatch display
@@ -311,14 +295,11 @@ $(document).ready(function() {
     
     $("#game-launchpad").append('<button class="btn btn-outline-secondary">');
     $("#game-launchpad > button").text("New Game");
-
-    // wonderWomenTrivia.resetGameState(dataset);
   }
 
   // Once player clicks the Start Game button, launch a new game.
   $("#game-launchpad").on("click", function() {
     // Create game object.
-    // console.log("before: " + wonderWomenTrivia);
     wonderWomenTrivia = new TriviaGame("Real Wonder Women Trivia",
       wonderWomenTriviaInstr,
       dataset,
@@ -336,38 +317,38 @@ $(document).ready(function() {
           "alt": "Judge Judy's Watch"
         }
       });
-    // console.log("after: " + wonderWomenTrivia);  */
+
     // Get rid of the start button.
     $("#survey-says").empty();
     $("#game-launchpad").empty();
-  
-    // Listen for player's answer.
-    $("#options").on("click", function(event) {
-      var targetID = "#" + event.target.id,
-          targetIDContents = $(targetID).text();
-
-      clearInterval(intervalID);
-      clearTimeout(timeoutID);
-  
-      if (targetIDContents === correctAns) {
-        // ASSERT: Player answered correctly.
-        wonderWomenTrivia.incrementCorrectAns();
-
-        displayResult("YOU GO, GIRL!", wonderWomenTrivia.getCorrectAnsGIF());
-      } 
-      else {
-        // ASSERT: Player answered incorrectly.
-        wonderWomenTrivia.incrementIncorrectAns();
-
-        displayResult("I DON'T THINK SO!", 
-                      wonderWomenTrivia.getIncorrectAnsGIF(),
-                      correctAns);
-      }
-
-      getNextQn();
-    });
 
     // Display initial Q&A set and remember correct answer.
     correctAns = displayQnASet(wonderWomenTrivia.getUniqueRandomQnA());
+  });
+
+  // Listen for player's answer.
+  $("#options").on("click", function(event) {
+    var targetID = "#" + event.target.id,
+        targetIDContents = $(targetID).text();
+
+    clearInterval(intervalID);
+    clearTimeout(timeoutID);
+
+    if (targetIDContents === correctAns) {
+      // ASSERT: Player answered correctly.
+      wonderWomenTrivia.incrementCorrectAns();
+
+      displayResult("YOU GO, GIRL!", wonderWomenTrivia.getCorrectAnsGIF());
+    } 
+    else {
+      // ASSERT: Player answered incorrectly.
+      wonderWomenTrivia.incrementIncorrectAns();
+
+      displayResult("I DON'T THINK SO!", 
+                    wonderWomenTrivia.getIncorrectAnsGIF(),
+                    correctAns);
+    }
+
+    getNextQn();
   });
 });
