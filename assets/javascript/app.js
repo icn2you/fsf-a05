@@ -18,7 +18,7 @@ The user is given the option to play again.
 const dataset = wonderWomen;
 const numQns = 10;
 const timeout = 30; // secs.
-const wonderWomenTriviaInstr = "You will be given a series of " + numQs + " questions regarding famous women in history, accompanied by four (4) possible answers. (Yes, this is a multiple-choice test!) Click the option you think is correct. The game will tell you if your answer is right or wrong. Answer all of the questions correctly, and you may consider yourself a true feminist!";
+const wonderWomenTriviaInstr = "You will be given a series of " + numQns + " questions regarding famous women in history, accompanied by four (4) possible answers. (Yes, this is a multiple-choice test!) Click the option you think is correct. The game will tell you if your answer is right or wrong. Answer all of the questions correctly, and you may consider yourself a true feminist!";
 
 class TriviaGame {
   // PROPERTIES
