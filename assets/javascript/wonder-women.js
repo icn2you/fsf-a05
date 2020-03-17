@@ -12,10 +12,10 @@ var wonderWomen = [
     "photo": "assets/images/sappho.jpg",
     "question": "Sappho, an ancient Greek woman, was known for:",
     "answers": [
-      "Her great lyric poetry, often Lesbian in theme",
-      "Writing The Odyssey and The Iliad",
-      "Being queen of the Greek Island of Lesbos",
-      "Her famous exploits as a warrior and hero of Athens"
+      "her great lyric poetry, often Lesbian in theme",
+      "writing The Odyssey and The Iliad",
+      "being queen of the Greek Island of Lesbos",
+      "her famous exploits as a warrior and hero of Athens"
     ]
   },
   {
@@ -23,10 +23,10 @@ var wonderWomen = [
     "photo": "assets/images/joan-of-arc.jpg",
     "question": "All these things are true about Joan of Arc, except:",
     "answers": [
-      "She died of plague in 1341",
-      "She was burned at the stake",
-      "She was part of a relief army at the Siege of Orleans",
-      "She was sainted by the Catholic Church in 1920"
+      "She died of plague in 1341.",
+      "She was burned at the stake.",
+      "She was part of a relief army at the Siege of Orleans.",
+      "She was sainted by the Catholic Church in 1920."
     ]
   },
   {
@@ -45,10 +45,10 @@ var wonderWomen = [
     "photo": "assets/images/toni-morrison.jpg",
     "question": "Toni Morrison, acclaimed African-American novelist, won:",
     "answers": [
-      "Both the Nobel and Pulitzer prizes for her writing",
-      "The Pulitzer Prize for Poetry",
-      "The Nobel Prize in Literature",
-      "Two Pulitzer Prizes in Fiction"
+      "both the Nobel and Pulitzer prizes for her writing",
+      "the Pulitzer Prize for Poetry",
+      "the Nobel Prize in Literature",
+      "two Pulitzer Prizes in Fiction"
     ]
   },
   {
@@ -57,9 +57,9 @@ var wonderWomen = [
     "question": "Marie Curie won two Nobel Prizes for her contributions to which fields:",
     "answers": [
       "Chemistry & Physics",
-      "Literature & Peace",
-      "Medicine & Physiology",
-      "She just won one award"
+      "Literature & Poetry",
+      "Medicine & Microbiology",
+      "She just won one award."
     ]
   },
   {
@@ -67,10 +67,10 @@ var wonderWomen = [
     "photo": "assets/images/gloria-steinem.jpg",
     "question": "Gloria Steinem, the famed American feminist activist, first came to national attention when:",
     "answers": [
-      "She went undercover as Playboy Bunny for an exposé",
-      "She burned her brassiere at a public event",
-      "She went on a hunger strike",
-      "Founded Ms. Magazine"
+      "She went undercover as Playboy Bunny for an exposé.",
+      "She burned her brassiere at a public event.",
+      "She went on a hunger strike.",
+      "Founded Ms. Magazine."
     ]
   },
   {
@@ -78,10 +78,10 @@ var wonderWomen = [
     "photo": "assets/images/indira-gandhi.jpg",
     "question": "Indira Gandhi was:",
     "answers": [
-      "The first female Prime Minister of India",
+      "the first female Prime Minister of India",
       "Mahatma Gandhi’s wife and supporter",
       "Mahatma Gandhi’s daughter and successor",
-      "A revolutionary fighting for Pakistani sovereignty"
+      "a revolutionary fighting for Pakistani sovereignty"
     ]
   },
   {
