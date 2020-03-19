@@ -19,17 +19,17 @@ This CSS specifies the layout and style for the Wonder Women Trivia Game.
 /******************************************************************************
  Color Elements
 *******************************************************************************/
-.color-primary-0 { color: #E83E8B }	/* Main Primary color */
-.color-primary-1 { color: #F692C0 }
-.color-primary-2 { color: #EF63A3 }
-.color-primary-3 { color: #E11A75 }
-.color-primary-4 { color: #CC005D }
+.color-primary-0 { color: #C60316 }	/* Main Primary color */
+.color-primary-1 { color: #F74F5F }
+.color-primary-2 { color: #ED1E31 }
+.color-primary-3 { color: #A2000F }
+.color-primary-4 { color: #7A000C }
 
-.color-complement-0 { color: #ABF341 }	/* Main Complement color */
-.color-complement-1 { color: #D1FA95 }
-.color-complement-2 { color: #BCF767 }
-.color-complement-3 { color: #99F01C }
-.color-complement-4 { color: #84DF00 }
+.color-complement-0 { color: #20AB03 }	/* Main Complement color */
+.color-complement-1 { color: #5DD544 }
+.color-complement-2 { color: #39CD1A }
+.color-complement-3 { color: #188C00 }
+.color-complement-4 { color: #126900 }
 
 /******************************************************************************
  Global Elements
@@ -44,9 +44,9 @@ html, main.container {
 }
 
 body {
-  background-color: rgb(255, 200, 225);
+  background-color: rgb(255, 185, 185);
   background-image: url("../images/pink-rice.png");
-  color: #333;
+  color: #000;
   font-family: 'Raleway', sans-serif;
   height: 92%;
 }
@@ -55,7 +55,7 @@ body {
  Navigation Elements
 *******************************************************************************/
 a, a:active, a:hover, a:visited {
-  color: #EF63A3;
+  color: #F74F5F;
   font-weight: 600;
 }
 
@@ -68,25 +68,34 @@ main.container {
 }
 
 button {
-  border-color: #CC005D !important;
-  color: #333 !important;
+  border-color: #C60316 !important;
+  color: #000 !important;
 }
 
 button:active, button:hover {
-  background-color: #CC005D !important;
+  background-color: #C60316 !important;
   color: #FFF !important;
+}
+
+#stopwatch, #question {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+#question {
+  font-weight: 600;
 }
 
 /******************************************************************************
  Footer Elements
 *******************************************************************************/
 .fixed-bottom {
-  border-top: 5px #CC005D solid;
+  border-top: 5px #C60316 solid;
   height: 8%;
 }
 
 footer {
-  background: #333;
+  background: #000;
   color: #FFF;
   font-weight: 500;
 }
