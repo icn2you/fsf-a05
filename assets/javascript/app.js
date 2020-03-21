@@ -16,7 +16,7 @@ rectly and incorrectly as well as the number of questions left unanswered).
 The user is given the option to play again.
 ******************************************************************************/
 const dataset = wonderWomen;
-const numQns = 10;
+const numQns = 3;
 const timeout = 30; // secs.
 const wonderWomenTriviaInstr = "You will be given a series of " + numQns + " questions regarding famous women in history, accompanied by four (4) possible answers. (Yes, this is a multiple-choice test!) Click the option you think is correct. The game will tell you if your answer is right or wrong. Answer all of the questions correctly, and you may consider yourself a true feminist!";
 
@@ -166,8 +166,9 @@ class TriviaGame {
 // Execute script once page is fully loaded
 $(document).ready(function() {
   // Create game object and define game-specific variables.
-  var wonderWomenTrivia, 
-      correctAns, 
+  var wonderWomenTrivia,
+      wonderWoman,
+      correctAns,
       stopwatch, 
       intervalID, 
       timeoutID;
@@ -235,6 +236,12 @@ $(document).ready(function() {
     $("#question").empty();
     $("#options").empty();
 
+    // Create container to hold result components
+    // $("#question").append('<div id="result" class="container">');
+    // $("#result").append('<div id="result-row" class="row">');
+    // $("#result-row").append('<div id="result-photo" class="col-6">');
+    // $("#result-col-1").append('<div id="result-col-2" class="col-6">');
+
     // Let the user know if their answer was right/wrong.
     $("#survey-says").append('<div id="result-comment">');
     $("#result-comment").text(comment);
@@ -245,9 +252,19 @@ $(document).ready(function() {
       $("#correct-ans").text("The correct answer is: " + ans);
     }
 
-    // Display result GIF.
+    // Display result GIF/image.
     $("#survey-says").append('<div id="result-img">');
-    $("#result-img").append('<img>');
+    
+    if (ans) {
+      // ASSERT: Answer was incorrect or missed.
+      $("#result-img").append('<img>');
+    }
+    else {
+      // ASSERT: Answer was correct
+      $("#result-img").append('<img class="img-thumbnail">');
+      $("#wonder-woman").text(img.alt);
+    }
+    
     $("#result-img > img").attr({
       src: img.src,
       alt: img.alt
@@ -262,10 +279,12 @@ $(document).ready(function() {
       // Clear the UI to prepare for next question.
       $("#stopwatch").empty();
       $("#survey-says").empty();
+      $("#wonder-woman").empty();
 
       if (wonderWomenTrivia.getNumQnsAsked() < numQns) {
-        // ASSERT: Game is not over. 
-        correctAns = displayQnASet(wonderWomenTrivia.getUniqueRandomQnA());
+        // ASSERT: Game is not over.
+        wonderWoman = wonderWomenTrivia.getUniqueRandomQnA(); 
+        correctAns = displayQnASet(wonderWoman);
       }
       else {
         // ASSERT: Game is over.
@@ -278,11 +297,20 @@ $(document).ready(function() {
   // displayGameStats() - Player game stats
   // ********************************************
   function displayGameStats() {
-    var correct = wonderWomenTrivia.getNumCorrectAns() + " were correct.";
-    var incorrect = wonderWomenTrivia.getNumIncorrectAns() + " were incorrect.";
-    var unanswered = "And " + wonderWomenTrivia.getNumUnans() + " were unanswered.";
-    var total = "Out of " + numQns + " questions:";
+    var gameStatsImg = wonderWomenTrivia.getCorrectAnsGIF(),
+        correct = wonderWomenTrivia.getNumCorrectAns() + " correct",
+        incorrect = wonderWomenTrivia.getNumIncorrectAns() + " incorrect",
+        unanswered = wonderWomenTrivia.getNumUnans() + " unanswered",
+        total = "Out of " + numQns + " questions:";
 
+    // Display result GIF/image.
+    $("#survey-says").append('<div id="result-img" style="max-width: inherit;">');
+    $("#result-img").append('<img>');
+    $("#result-img > img").attr({
+      src: gameStatsImg.src,
+      alt: gameStatsImg.alt
+    });
+    
     $("#survey-says").append('<div id="total-qns">');
     $("#total-qns").text(total);
     $("#survey-says").append('<ul id="player-stats">');
@@ -324,7 +352,8 @@ $(document).ready(function() {
     $("#game-launchpad").empty();
 
     // Display initial Q&A set and remember correct answer.
-    correctAns = displayQnASet(wonderWomenTrivia.getUniqueRandomQnA());
+    wonderWoman = wonderWomenTrivia.getUniqueRandomQnA(); 
+    correctAns = displayQnASet(wonderWoman);
   });
 
   // Listen for player's answer.
@@ -339,7 +368,8 @@ $(document).ready(function() {
       // ASSERT: Player answered correctly.
       wonderWomenTrivia.incrementCorrectAns();
 
-      displayResult("YOU GO, GIRL!", wonderWomenTrivia.getCorrectAnsGIF());
+      displayResult("YOU GO, GIRL!", { "src": wonderWoman.photo, 
+                                       "alt": wonderWoman.woman });
     } 
     else {
       // ASSERT: Player answered incorrectly.

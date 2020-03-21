@@ -119,7 +119,7 @@ var wonderWomen = [
   },
   {
     "woman": "JK Rowling",
-    "photo": "assets/images/jk-rowling.jpg",
+    "photo": "assets/images/jk-rowling.jpeg",
     "question": "The author of the Harry Potter book series chose the pen name “JK Rowling” so as to not reveal her gender. What do the initials “JK” stand for?",
     "answers": [
       "Joanne Kathleen",

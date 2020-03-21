@@ -77,13 +77,47 @@ button:active, button:hover {
   color: #FFF !important;
 }
 
-#stopwatch, #question {
+#stopwatch, #question, #result-comment {
   margin-bottom: 1em;
   margin-top: 1em;
 }
 
-#question {
+#question, #result-comment, #total-qns {
   font-weight: 600;
+}
+
+#result-comment, #total-qns {
+  font-size: 1.25rem;
+}
+
+#result-img {
+  max-width: 240px;
+  margin: 1em auto;
+}
+
+#total-qns {
+  margin-top: 1em;
+}
+
+h2 {
+  color: #C60316;
+  font: 3em 'Lovers Quarrel', cursive;
+}
+
+ul {
+  max-width: 25%;
+  margin: auto;
+}
+
+li {
+  list-style-position: inside;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+  text-align: left;
+}
+
+li:last-of-type {
+  margin-bottom: 2em;
 }
 
 /******************************************************************************
